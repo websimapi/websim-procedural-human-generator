@@ -8,117 +8,119 @@ export class HumanAnatomy {
         this.scale = 1.0;
         
         // Joint positions
-        // Refined for better stance and proportions
+        // Refined for accurate, realistic proportions (not superhero)
+        // 1 unit = approx 10cm. Height ~17.5 units = 175cm.
         this.skeleton = {
             head: new THREE.Vector3(0, 17.5, 0.2),
-            neck: new THREE.Vector3(0, 15.0, 0),
+            neck: new THREE.Vector3(0, 15.5, 0.1),
             
-            shoulderL: new THREE.Vector3(4.2, 14.5, -0.5),
-            shoulderR: new THREE.Vector3(-4.2, 14.5, -0.5),
-            elbowL: new THREE.Vector3(6.8, 10.5, 0.2),
-            elbowR: new THREE.Vector3(-6.8, 10.5, 0.2),
-            wristL: new THREE.Vector3(7.8, 6.5, 0),
-            wristR: new THREE.Vector3(-7.8, 6.5, 0),
+            // Shoulders much narrower (Biacromial width ~4.0 units)
+            shoulderL: new THREE.Vector3(2.0, 14.5, -0.2), 
+            shoulderR: new THREE.Vector3(-2.0, 14.5, -0.2),
             
-            chest: new THREE.Vector3(0, 13, 0.5),
-            spineMid: new THREE.Vector3(0, 10, -0.5),
+            elbowL: new THREE.Vector3(2.6, 10.8, 0.2),
+            elbowR: new THREE.Vector3(-2.6, 10.8, 0.2),
+            
+            wristL: new THREE.Vector3(3.0, 7.0, 0.4),
+            wristR: new THREE.Vector3(-3.0, 7.0, 0.4),
+            
+            chest: new THREE.Vector3(0, 13.5, 0.3),
+            spineMid: new THREE.Vector3(0, 10.5, -0.3),
             pelvis: new THREE.Vector3(0, 9.0, 0),
             
-            // Hips slightly closer for more natural stance
-            hipL: new THREE.Vector3(2.2, 9.0, 0),
-            hipR: new THREE.Vector3(-2.2, 9.0, 0),
-            kneeL: new THREE.Vector3(2.3, 5.0, 0.8),
-            kneeR: new THREE.Vector3(-2.3, 5.0, 0.8),
-            ankleL: new THREE.Vector3(2.5, 1.0, 0),
-            ankleR: new THREE.Vector3(-2.5, 1.0, 0),
+            // Hips narrower
+            hipL: new THREE.Vector3(1.1, 9.0, 0),
+            hipR: new THREE.Vector3(-1.1, 9.0, 0),
+            kneeL: new THREE.Vector3(1.4, 5.0, 0.4),
+            kneeR: new THREE.Vector3(-1.4, 5.0, 0.4),
+            ankleL: new THREE.Vector3(1.6, 1.0, 0),
+            ankleR: new THREE.Vector3(-1.6, 1.0, 0),
             
-            // Feet planting
-            footL: new THREE.Vector3(2.8, 0, 1.8),
-            footR: new THREE.Vector3(-2.8, 0, 1.8),
+            // Feet
+            footL: new THREE.Vector3(1.8, 0, 1.2),
+            footR: new THREE.Vector3(-1.8, 0, 1.2),
         };
 
         this.muscles = [
             // --- Core / Torso ---
-            { type: 'box', pos: new THREE.Vector3(0, 12, -0.2), size: new THREE.Vector3(2.4, 3.5, 1.1), r: 0.9, smooth: 1.5 }, // Torso Core
-            { type: 'capsule', a: 'neck', b: 'spineMid', r: 1.8, smooth: 1.0 }, // Spine column
-            { type: 'capsule', a: 'shoulderL', b: 'shoulderR', r: 0.8, smooth: 1.2 }, // Clavicle Area
+            // Slimmer torso
+            { type: 'box', pos: new THREE.Vector3(0, 12, -0.1), size: new THREE.Vector3(1.3, 3.5, 0.9), r: 0.7, smooth: 1.5 }, 
+            { type: 'capsule', a: 'neck', b: 'spineMid', r: 1.1, smooth: 1.0 }, // Spine
+            { type: 'capsule', a: 'shoulderL', b: 'shoulderR', r: 0.6, smooth: 1.0 }, // Clavicle
             
-            // Neck Details (Sternocleidomastoid)
-            { type: 'capsule', a: new THREE.Vector3(1.2, 16.5, 0.5), b: new THREE.Vector3(0.5, 15.0, 1.0), r: 0.3, smooth: 0.4 }, 
-            { type: 'capsule', a: new THREE.Vector3(-1.2, 16.5, 0.5), b: new THREE.Vector3(-0.5, 15.0, 1.0), r: 0.3, smooth: 0.4 },
+            // Neck Details
+            { type: 'capsule', a: new THREE.Vector3(0.6, 16.5, 0.5), b: new THREE.Vector3(0.3, 15.2, 0.6), r: 0.3, smooth: 0.4 }, 
+            { type: 'capsule', a: new THREE.Vector3(-0.6, 16.5, 0.5), b: new THREE.Vector3(-0.3, 15.2, 0.6), r: 0.3, smooth: 0.4 },
 
-            // Traps
-            { type: 'capsule', a: new THREE.Vector3(1.5, 15.5, -0.5), b: 'shoulderL', r: 1.0, smooth: 0.8 }, 
-            { type: 'capsule', a: new THREE.Vector3(-1.5, 15.5, -0.5), b: 'shoulderR', r: 1.0, smooth: 0.8 }, 
+            // Traps (Smaller)
+            { type: 'capsule', a: new THREE.Vector3(0.8, 15.5, -0.3), b: 'shoulderL', r: 0.7, smooth: 0.8 }, 
+            { type: 'capsule', a: new THREE.Vector3(-0.8, 15.5, -0.3), b: 'shoulderR', r: 0.7, smooth: 0.8 }, 
 
-            // Pecs (Refined) - Angled slightly for mass
-            { type: 'box', pos: new THREE.Vector3(2.1, 13.5, 1.4), size: new THREE.Vector3(1.6, 1.1, 0.3), r: 1.1, smooth: 0.8 },
-            { type: 'box', pos: new THREE.Vector3(-2.1, 13.5, 1.4), size: new THREE.Vector3(1.6, 1.1, 0.3), r: 1.1, smooth: 0.8 },
+            // Pecs (Smaller, realistic)
+            { type: 'box', pos: new THREE.Vector3(1.0, 13.5, 1.2), size: new THREE.Vector3(0.9, 0.9, 0.2), r: 0.6, smooth: 0.8 },
+            { type: 'box', pos: new THREE.Vector3(-1.0, 13.5, 1.2), size: new THREE.Vector3(0.9, 0.9, 0.2), r: 0.6, smooth: 0.8 },
 
-            // Lats (Wings)
-            { type: 'capsule', a: new THREE.Vector3(3.5, 13.0, -0.8), b: new THREE.Vector3(2.0, 10.0, -0.8), r: 1.2, smooth: 1.0 },
-            { type: 'capsule', a: new THREE.Vector3(-3.5, 13.0, -0.8), b: new THREE.Vector3(-2.0, 10.0, -0.8), r: 1.2, smooth: 1.0 },
+            // Lats (Toned down)
+            { type: 'capsule', a: new THREE.Vector3(1.8, 13.0, -0.6), b: new THREE.Vector3(1.2, 10.0, -0.6), r: 0.7, smooth: 1.0 },
+            { type: 'capsule', a: new THREE.Vector3(-1.8, 13.0, -0.6), b: new THREE.Vector3(-1.2, 10.0, -0.6), r: 0.7, smooth: 1.0 },
 
-            // Abs (Rectus Abdominis) - Upper and Lower
-            { type: 'capsule', a: new THREE.Vector3(0, 12.5, 1.6), b: new THREE.Vector3(0, 10.5, 1.6), r: 1.1, smooth: 0.4 }, 
-            { type: 'capsule', a: new THREE.Vector3(0, 10.5, 1.5), b: new THREE.Vector3(0, 8.5, 1.4), r: 1.1, smooth: 0.4 },
+            // Abs
+            { type: 'capsule', a: new THREE.Vector3(0, 12.5, 1.2), b: new THREE.Vector3(0, 10.5, 1.2), r: 0.9, smooth: 0.5 }, 
+            { type: 'capsule', a: new THREE.Vector3(0, 10.5, 1.1), b: new THREE.Vector3(0, 8.5, 1.0), r: 0.9, smooth: 0.5 },
 
-            // Glutes
-            { type: 'sphere', pos: new THREE.Vector3(2.2, 9.0, -1.2), r: 2.3, smooth: 1.0 },
-            { type: 'sphere', pos: new THREE.Vector3(-2.2, 9.0, -1.2), r: 2.3, smooth: 1.0 },
+            // Glutes (Proportioned)
+            { type: 'sphere', pos: new THREE.Vector3(1.1, 9.0, -0.8), r: 1.4, smooth: 1.0 },
+            { type: 'sphere', pos: new THREE.Vector3(-1.1, 9.0, -0.8), r: 1.4, smooth: 1.0 },
 
             // --- Head ---
-            { type: 'sphere', pos: 'head', r: 2.2, smooth: 0.2 }, // Cranium
-            { type: 'box', pos: new THREE.Vector3(0, 16.2, 0.8), size: new THREE.Vector3(1.2, 1.1, 1.0), r: 0.6, smooth: 0.5 }, // Face Structure
+            { type: 'sphere', pos: 'head', r: 1.9, smooth: 0.2 }, // Cranium
+            { type: 'box', pos: new THREE.Vector3(0, 16.2, 0.6), size: new THREE.Vector3(1.0, 1.0, 0.9), r: 0.5, smooth: 0.5 }, // Face
 
             // --- Arms (Left) ---
-            { type: 'capsule', a: 'shoulderL', b: new THREE.Vector3(4.5, 13.0, -0.5), r: 1.3, smooth: 0.7 }, // Deltoid
-            { type: 'capsule', a: 'shoulderL', b: 'elbowL', r: 0.9, smooth: 0.6 }, // Bicep/Tricep
-            { type: 'capsule', a: 'elbowL', b: 'wristL', r: 0.7, smooth: 0.5 }, // Forearm
+            { type: 'capsule', a: 'shoulderL', b: new THREE.Vector3(2.4, 13.0, -0.2), r: 0.9, smooth: 0.7 }, // Deltoid
+            { type: 'capsule', a: 'shoulderL', b: 'elbowL', r: 0.65, smooth: 0.6 }, // Bicep/Tricep
+            { type: 'capsule', a: 'elbowL', b: 'wristL', r: 0.5, smooth: 0.5 }, // Forearm
 
-            // Hand (Left) - Detailed
-            { type: 'box', pos: new THREE.Vector3(7.9, 5.5, 0), size: new THREE.Vector3(0.5, 0.7, 0.2), r: 0.35, smooth: 0.3 }, // Palm
-            // Fingers (Thumb, Index, Middle, Ring, Pinky) - Thicked slightly for voxel safety
-            { type: 'capsule', a: new THREE.Vector3(7.7, 5.6, 0.3), b: new THREE.Vector3(7.9, 5.0, 0.5), r: 0.22, smooth: 0.15 }, // Thumb
-            { type: 'capsule', a: new THREE.Vector3(7.8, 4.8, 0.2), b: new THREE.Vector3(7.9, 3.8, 0.25), r: 0.20, smooth: 0.1 }, // Index
-            { type: 'capsule', a: new THREE.Vector3(8.0, 4.8, 0.05), b: new THREE.Vector3(8.2, 3.7, 0.05), r: 0.21, smooth: 0.1 }, // Middle
-            { type: 'capsule', a: new THREE.Vector3(8.2, 4.8, -0.1), b: new THREE.Vector3(8.5, 3.8, -0.15), r: 0.20, smooth: 0.1 }, // Ring
-            { type: 'capsule', a: new THREE.Vector3(8.4, 4.9, -0.25), b: new THREE.Vector3(8.7, 4.1, -0.3), r: 0.19, smooth: 0.1 }, // Pinky
+            // Hand (Left)
+            // Palm centered near wrist
+            { type: 'box', pos: new THREE.Vector3(3.1, 6.2, 0.5), size: new THREE.Vector3(0.4, 0.5, 0.15), r: 0.25, smooth: 0.3 },
+            // Fingers
+            { type: 'capsule', a: new THREE.Vector3(2.9, 6.4, 0.7), b: new THREE.Vector3(3.0, 5.9, 0.9), r: 0.18, smooth: 0.15 }, // Thumb
+            { type: 'capsule', a: new THREE.Vector3(2.9, 5.6, 0.6), b: new THREE.Vector3(2.9, 4.8, 0.65), r: 0.16, smooth: 0.1 }, // Index
+            { type: 'capsule', a: new THREE.Vector3(3.1, 5.6, 0.5), b: new THREE.Vector3(3.15, 4.7, 0.5), r: 0.17, smooth: 0.1 }, // Middle
+            { type: 'capsule', a: new THREE.Vector3(3.3, 5.6, 0.4), b: new THREE.Vector3(3.4, 4.8, 0.35), r: 0.16, smooth: 0.1 }, // Ring
+            { type: 'capsule', a: new THREE.Vector3(3.5, 5.7, 0.3), b: new THREE.Vector3(3.6, 5.0, 0.2), r: 0.15, smooth: 0.1 }, // Pinky
 
             // --- Arms (Right) ---
-            { type: 'capsule', a: 'shoulderR', b: new THREE.Vector3(-4.5, 13.0, -0.5), r: 1.3, smooth: 0.7 }, // Deltoid
-            { type: 'capsule', a: 'shoulderR', b: 'elbowR', r: 0.9, smooth: 0.6 },
-            { type: 'capsule', a: 'elbowR', b: 'wristR', r: 0.7, smooth: 0.5 },
+            { type: 'capsule', a: 'shoulderR', b: new THREE.Vector3(-2.4, 13.0, -0.2), r: 0.9, smooth: 0.7 },
+            { type: 'capsule', a: 'shoulderR', b: 'elbowR', r: 0.65, smooth: 0.6 },
+            { type: 'capsule', a: 'elbowR', b: 'wristR', r: 0.5, smooth: 0.5 },
 
-             // Hand (Right) - Detailed
-            { type: 'box', pos: new THREE.Vector3(-7.9, 5.5, 0), size: new THREE.Vector3(0.5, 0.7, 0.2), r: 0.35, smooth: 0.3 }, // Palm
-            { type: 'capsule', a: new THREE.Vector3(-7.7, 5.6, 0.3), b: new THREE.Vector3(-7.9, 5.0, 0.5), r: 0.22, smooth: 0.15 }, // Thumb
-            { type: 'capsule', a: new THREE.Vector3(-7.8, 4.8, 0.2), b: new THREE.Vector3(-7.9, 3.8, 0.25), r: 0.20, smooth: 0.1 }, // Index
-            { type: 'capsule', a: new THREE.Vector3(-8.0, 4.8, 0.05), b: new THREE.Vector3(-8.2, 3.7, 0.05), r: 0.21, smooth: 0.1 }, // Middle
-            { type: 'capsule', a: new THREE.Vector3(-8.2, 4.8, -0.1), b: new THREE.Vector3(-8.5, 3.8, -0.15), r: 0.20, smooth: 0.1 }, // Ring
-            { type: 'capsule', a: new THREE.Vector3(-8.4, 4.9, -0.25), b: new THREE.Vector3(-8.7, 4.1, -0.3), r: 0.19, smooth: 0.1 }, // Pinky
-
+            // Hand (Right)
+            { type: 'box', pos: new THREE.Vector3(-3.1, 6.2, 0.5), size: new THREE.Vector3(0.4, 0.5, 0.15), r: 0.25, smooth: 0.3 },
+            { type: 'capsule', a: new THREE.Vector3(-2.9, 6.4, 0.7), b: new THREE.Vector3(-3.0, 5.9, 0.9), r: 0.18, smooth: 0.15 }, // Thumb
+            { type: 'capsule', a: new THREE.Vector3(-2.9, 5.6, 0.6), b: new THREE.Vector3(-2.9, 4.8, 0.65), r: 0.16, smooth: 0.1 }, // Index
+            { type: 'capsule', a: new THREE.Vector3(-3.1, 5.6, 0.5), b: new THREE.Vector3(-3.15, 4.7, 0.5), r: 0.17, smooth: 0.1 }, // Middle
+            { type: 'capsule', a: new THREE.Vector3(-3.3, 5.6, 0.4), b: new THREE.Vector3(-3.4, 4.8, 0.35), r: 0.16, smooth: 0.1 }, // Ring
+            { type: 'capsule', a: new THREE.Vector3(-3.5, 5.7, 0.3), b: new THREE.Vector3(-3.6, 5.0, 0.2), r: 0.15, smooth: 0.1 }, // Pinky
 
             // --- Legs (Left) ---
-            { type: 'capsule', a: 'hipL', b: 'kneeL', r: 1.4, smooth: 0.8 }, // Quads
-            // Adductor (Inner Thigh) - Fills the gap
-            { type: 'capsule', a: new THREE.Vector3(2.2, 8.5, 0.2), b: new THREE.Vector3(2.3, 6.0, 0.5), r: 1.1, smooth: 0.7 },
-            
-            { type: 'capsule', a: 'kneeL', b: 'ankleL', r: 0.9, smooth: 0.6 }, // Calf
+            { type: 'capsule', a: 'hipL', b: 'kneeL', r: 1.0, smooth: 0.8 }, // Quads (Slimmer)
+            { type: 'capsule', a: new THREE.Vector3(1.1, 8.5, 0.1), b: new THREE.Vector3(1.2, 6.0, 0.2), r: 0.8, smooth: 0.7 }, // Adductor
+            { type: 'capsule', a: 'kneeL', b: 'ankleL', r: 0.7, smooth: 0.6 }, // Calf
             
             // Foot Left
-            { type: 'box', pos: new THREE.Vector3(2.6, 0.4, 0.5), size: new THREE.Vector3(0.55, 0.4, 0.9), r: 0.2, smooth: 0.4 }, // Heel/Mid
-            { type: 'box', pos: new THREE.Vector3(2.7, 0.3, 1.8), size: new THREE.Vector3(0.6, 0.25, 0.5), r: 0.25, smooth: 0.3 }, // Toes
+            { type: 'box', pos: new THREE.Vector3(1.6, 0.4, 0.3), size: new THREE.Vector3(0.4, 0.35, 0.7), r: 0.2, smooth: 0.4 }, // Heel/Mid
+            { type: 'box', pos: new THREE.Vector3(1.7, 0.3, 1.4), size: new THREE.Vector3(0.45, 0.2, 0.4), r: 0.2, smooth: 0.3 }, // Toes
 
              // --- Legs (Right) ---
-            { type: 'capsule', a: 'hipR', b: 'kneeR', r: 1.4, smooth: 0.8 },
-            { type: 'capsule', a: new THREE.Vector3(-2.2, 8.5, 0.2), b: new THREE.Vector3(-2.3, 6.0, 0.5), r: 1.1, smooth: 0.7 }, // Adductor
-            
-            { type: 'capsule', a: 'kneeR', b: 'ankleR', r: 0.9, smooth: 0.6 },
+            { type: 'capsule', a: 'hipR', b: 'kneeR', r: 1.0, smooth: 0.8 },
+            { type: 'capsule', a: new THREE.Vector3(-1.1, 8.5, 0.1), b: new THREE.Vector3(-1.2, 6.0, 0.2), r: 0.8, smooth: 0.7 },
+            { type: 'capsule', a: 'kneeR', b: 'ankleR', r: 0.7, smooth: 0.6 },
             
             // Foot Right
-            { type: 'box', pos: new THREE.Vector3(-2.6, 0.4, 0.5), size: new THREE.Vector3(0.55, 0.4, 0.9), r: 0.2, smooth: 0.4 },
-            { type: 'box', pos: new THREE.Vector3(-2.7, 0.3, 1.8), size: new THREE.Vector3(0.6, 0.25, 0.5), r: 0.25, smooth: 0.3 },
+            { type: 'box', pos: new THREE.Vector3(-1.6, 0.4, 0.3), size: new THREE.Vector3(0.4, 0.35, 0.7), r: 0.2, smooth: 0.4 },
+            { type: 'box', pos: new THREE.Vector3(-1.7, 0.3, 1.4), size: new THREE.Vector3(0.45, 0.2, 0.4), r: 0.2, smooth: 0.3 },
         ];
     }
 

@@ -33,19 +33,20 @@ const ambientLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.2); // Lowe
 scene.add(ambientLight);
 
 const mainLight = new THREE.DirectionalLight(0xfff0dd, 2.5);
-mainLight.position.set(5, 10, 7);
+// Moved light higher to ensure shadows cover entire head/shoulder area without clipping
+mainLight.position.set(5, 25, 10);
 mainLight.castShadow = true;
 mainLight.shadow.bias = -0.0001;
-mainLight.shadow.normalBias = 0.02; // Helps with shadow acne on curved organic surfaces
+mainLight.shadow.normalBias = 0.02; 
 mainLight.shadow.mapSize.width = 2048;
 mainLight.shadow.mapSize.height = 2048;
-// Fix: Expand shadow camera frustum to prevent body parts being cut off
-mainLight.shadow.camera.left = -20;
-mainLight.shadow.camera.right = 20;
-mainLight.shadow.camera.top = 25;
-mainLight.shadow.camera.bottom = -15;
+
+mainLight.shadow.camera.left = -15;
+mainLight.shadow.camera.right = 15;
+mainLight.shadow.camera.top = 15;
+mainLight.shadow.camera.bottom = -30; // Extend down for feet
 mainLight.shadow.camera.near = 0.5;
-mainLight.shadow.camera.far = 60;
+mainLight.shadow.camera.far = 80;
 scene.add(mainLight);
 
 const rimLight = new THREE.SpotLight(0xbadbff, 10.0);
@@ -76,11 +77,14 @@ const skinMaterial = new THREE.MeshPhysicalMaterial({
 });
 
 // Create Geometry
-// Optimized bounds to increase voxel density for fingers/toes without killing performance
-const resolution = window.innerWidth < 600 ? 70 : 100; // Increased resolution
+// Bounds tightly fitted to new slim anatomy to maximize voxel density (Detail)
+// X: -6 to 6 (Width 12) captures arms
+// Y: -1 to 20 (Height 21) captures feet to head
+// Z: -4 to 4 (Depth 8) captures body depth
+const resolution = window.innerWidth < 600 ? 80 : 120; // High res for fingers
 const mesher = new Mesher(anatomy, {
-    min: new THREE.Vector3(-10, -1, -5), // Tighter bounds
-    max: new THREE.Vector3(10, 21, 5)
+    min: new THREE.Vector3(-6, -1, -4), 
+    max: new THREE.Vector3(6, 20, 4)
 }, resolution);
 
 const uiStatus = document.getElementById('status-text');
