@@ -40,12 +40,12 @@ mainLight.shadow.normalBias = 0.02; // Helps with shadow acne on curved organic 
 mainLight.shadow.mapSize.width = 2048;
 mainLight.shadow.mapSize.height = 2048;
 // Fix: Expand shadow camera frustum to prevent body parts being cut off
-mainLight.shadow.camera.left = -15;
-mainLight.shadow.camera.right = 15;
-mainLight.shadow.camera.top = 20;
-mainLight.shadow.camera.bottom = -5;
+mainLight.shadow.camera.left = -20;
+mainLight.shadow.camera.right = 20;
+mainLight.shadow.camera.top = 25;
+mainLight.shadow.camera.bottom = -15;
 mainLight.shadow.camera.near = 0.5;
-mainLight.shadow.camera.far = 50;
+mainLight.shadow.camera.far = 60;
 scene.add(mainLight);
 
 const rimLight = new THREE.SpotLight(0xbadbff, 10.0);
@@ -62,21 +62,16 @@ scene.add(backLight);
 // --- GENERATION PROCESS ---
 
 const anatomy = new HumanAnatomy();
-const textures = generateSkinTextures();
 
-// Create Material (PBR Skin)
+// Placeholder Material until generation
 const skinMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xe0c0a0,
-    map: textures.albedo,
-    normalMap: textures.normal,
-    roughnessMap: textures.roughness,
-    roughness: 0.45,
+    color: 0xffffff, // White to respect texture colors
     metalness: 0.0,
-    ior: 1.4, // Skin Index of Refraction
-    sheen: 0.4,
-    sheenColor: 0xffcccc,
-    transmission: 0.1, // Fake SSS thickness
-    thickness: 2.0,
+    roughness: 0.5,
+    ior: 1.4, 
+    sheen: 0.3,
+    sheenColor: 0xffddcc,
+    sheenRoughness: 0.5,
     side: THREE.DoubleSide
 });
 
@@ -93,18 +88,31 @@ const loadingDiv = document.getElementById('loading');
 
 // Execute generation in a non-blocking way
 async function generateBody() {
+    uiStatus.innerText = "Synthesizing High-Res Skin Textures...";
+    
+    // Allow UI to update
+    await new Promise(r => setTimeout(r, 50));
+
+    // Generate Textures (Heavy Operation)
+    const textures = generateSkinTextures();
+    
+    // Update Material
+    skinMaterial.map = textures.albedo;
+    skinMaterial.normalMap = textures.normal;
+    skinMaterial.roughnessMap = textures.roughness;
+    skinMaterial.normalScale.set(1.5, 1.5);
+    skinMaterial.needsUpdate = true;
+
     uiStatus.innerText = "Calculating Volumetric Anatomy...";
+    uiBar.style.width = '20%';
     
-    // We modify Mesher to be async or chunked for the UI update
-    // For this demo, we run it and wait (JS single thread limit)
-    // Ideally, this goes in a WebWorker.
-    
-    // Using a setTimeout to allow UI to render first frame
+    await new Promise(r => setTimeout(r, 50));
+
+    // Calculate Geometry
     setTimeout(() => {
         const start = performance.now();
         const geometry = mesher.generate((progress) => {
-            // This callback is synchronous in current implementation
-            // so it won't actually update DOM during loop unless we yielded.
+             // Sync callback
         });
         
         const end = performance.now();
