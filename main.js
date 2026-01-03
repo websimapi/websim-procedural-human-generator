@@ -24,23 +24,26 @@ controls.target.set(0, 10, 0);
 controls.enableDamping = true;
 
 // Lighting (Studio Setup)
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+const ambientLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.6);
 scene.add(ambientLight);
 
-const mainLight = new THREE.DirectionalLight(0xffeebb, 2.0);
+const mainLight = new THREE.DirectionalLight(0xffeebb, 3.0);
 mainLight.position.set(10, 20, 15);
 mainLight.castShadow = true;
+mainLight.shadow.bias = -0.0001;
 mainLight.shadow.mapSize.width = 2048;
 mainLight.shadow.mapSize.height = 2048;
 scene.add(mainLight);
 
-const rimLight = new THREE.SpotLight(0x4455ff, 5.0);
-rimLight.position.set(-10, 15, -10);
-rimLight.lookAt(0, 10, 0);
+const rimLight = new THREE.SpotLight(0xbadbff, 8.0);
+rimLight.position.set(-15, 20, -15);
+rimLight.lookAt(0, 8, 0);
+rimLight.angle = Math.PI / 4;
+rimLight.penumbra = 0.5;
 scene.add(rimLight);
 
-const fillLight = new THREE.PointLight(0xffaa88, 0.5);
-fillLight.position.set(0, 5, 10);
+const fillLight = new THREE.PointLight(0xffaa88, 1.0);
+fillLight.position.set(-5, 10, 10);
 scene.add(fillLight);
 
 // --- GENERATION PROCESS ---
@@ -54,7 +57,7 @@ const skinMaterial = new THREE.MeshPhysicalMaterial({
     map: textures.albedo,
     normalMap: textures.normal,
     roughnessMap: textures.roughness,
-    roughness: 0.6,
+    roughness: 0.45,
     metalness: 0.0,
     ior: 1.4, // Skin Index of Refraction
     sheen: 0.4,
@@ -65,7 +68,7 @@ const skinMaterial = new THREE.MeshPhysicalMaterial({
 });
 
 // Create Geometry
-const resolution = window.innerWidth < 600 ? 50 : 100; // Lower resolution on mobile
+const resolution = window.innerWidth < 600 ? 60 : 80; // MC Resolution (Cubed!)
 const mesher = new Mesher(anatomy, {
     min: new THREE.Vector3(-10, 0, -10),
     max: new THREE.Vector3(10, 22, 10)
