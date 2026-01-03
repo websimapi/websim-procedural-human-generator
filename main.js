@@ -67,7 +67,7 @@ const anatomy = new HumanAnatomy();
 const skinMaterial = new THREE.MeshPhysicalMaterial({
     color: 0xffffff, // White to respect texture colors
     metalness: 0.0,
-    roughness: 1.0, // Fully respect the roughness map
+    roughness: 0.5,
     ior: 1.4, 
     sheen: 0.3,
     sheenColor: 0xffddcc,
@@ -76,10 +76,11 @@ const skinMaterial = new THREE.MeshPhysicalMaterial({
 });
 
 // Create Geometry
-const resolution = window.innerWidth < 600 ? 70 : 90; // MC Resolution (Cubed!)
+// Optimized bounds to increase voxel density for fingers/toes without killing performance
+const resolution = window.innerWidth < 600 ? 70 : 100; // Increased resolution
 const mesher = new Mesher(anatomy, {
-    min: new THREE.Vector3(-12, -3, -12),
-    max: new THREE.Vector3(12, 24, 12)
+    min: new THREE.Vector3(-10, -1, -5), // Tighter bounds
+    max: new THREE.Vector3(10, 21, 5)
 }, resolution);
 
 const uiStatus = document.getElementById('status-text');
