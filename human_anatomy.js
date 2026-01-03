@@ -43,9 +43,9 @@ export class HumanAnatomy {
 
         this.muscles = [
             // --- Core / Torso ---
-            // Slimmer torso
-            { type: 'box', pos: new THREE.Vector3(0, 12, -0.1), size: new THREE.Vector3(1.3, 3.5, 0.9), r: 0.7, smooth: 1.5 }, 
-            { type: 'capsule', a: 'neck', b: 'spineMid', r: 1.1, smooth: 1.0 }, // Spine
+            // Slimmer torso (refined width for better proportions)
+            { type: 'box', pos: new THREE.Vector3(0, 12, -0.1), size: new THREE.Vector3(1.1, 3.5, 0.8), r: 0.6, smooth: 1.5 }, 
+            { type: 'capsule', a: 'neck', b: 'spineMid', r: 1.0, smooth: 1.0 }, // Spine
             { type: 'capsule', a: 'shoulderL', b: 'shoulderR', r: 0.6, smooth: 1.0 }, // Clavicle
             
             // Neck Details
@@ -84,12 +84,12 @@ export class HumanAnatomy {
             // Hand (Left)
             // Palm centered near wrist
             { type: 'box', pos: new THREE.Vector3(3.1, 6.2, 0.5), size: new THREE.Vector3(0.4, 0.5, 0.15), r: 0.25, smooth: 0.3 },
-            // Fingers
-            { type: 'capsule', a: new THREE.Vector3(2.9, 6.4, 0.7), b: new THREE.Vector3(3.0, 5.9, 0.9), r: 0.18, smooth: 0.15 }, // Thumb
-            { type: 'capsule', a: new THREE.Vector3(2.9, 5.6, 0.6), b: new THREE.Vector3(2.9, 4.8, 0.65), r: 0.16, smooth: 0.1 }, // Index
-            { type: 'capsule', a: new THREE.Vector3(3.1, 5.6, 0.5), b: new THREE.Vector3(3.15, 4.7, 0.5), r: 0.17, smooth: 0.1 }, // Middle
-            { type: 'capsule', a: new THREE.Vector3(3.3, 5.6, 0.4), b: new THREE.Vector3(3.4, 4.8, 0.35), r: 0.16, smooth: 0.1 }, // Ring
-            { type: 'capsule', a: new THREE.Vector3(3.5, 5.7, 0.3), b: new THREE.Vector3(3.6, 5.0, 0.2), r: 0.15, smooth: 0.1 }, // Pinky
+            // Fingers (Thickened for voxel capture)
+            { type: 'capsule', a: new THREE.Vector3(2.9, 6.4, 0.7), b: new THREE.Vector3(3.0, 5.9, 0.9), r: 0.22, smooth: 0.15 }, // Thumb
+            { type: 'capsule', a: new THREE.Vector3(2.9, 5.6, 0.6), b: new THREE.Vector3(2.9, 4.8, 0.65), r: 0.20, smooth: 0.1 }, // Index
+            { type: 'capsule', a: new THREE.Vector3(3.1, 5.6, 0.5), b: new THREE.Vector3(3.15, 4.7, 0.5), r: 0.21, smooth: 0.1 }, // Middle
+            { type: 'capsule', a: new THREE.Vector3(3.3, 5.6, 0.4), b: new THREE.Vector3(3.4, 4.8, 0.35), r: 0.20, smooth: 0.1 }, // Ring
+            { type: 'capsule', a: new THREE.Vector3(3.5, 5.7, 0.3), b: new THREE.Vector3(3.6, 5.0, 0.2), r: 0.19, smooth: 0.1 }, // Pinky
 
             // --- Arms (Right) ---
             { type: 'capsule', a: 'shoulderR', b: new THREE.Vector3(-2.4, 13.0, -0.2), r: 0.9, smooth: 0.7 },
@@ -98,11 +98,11 @@ export class HumanAnatomy {
 
             // Hand (Right)
             { type: 'box', pos: new THREE.Vector3(-3.1, 6.2, 0.5), size: new THREE.Vector3(0.4, 0.5, 0.15), r: 0.25, smooth: 0.3 },
-            { type: 'capsule', a: new THREE.Vector3(-2.9, 6.4, 0.7), b: new THREE.Vector3(-3.0, 5.9, 0.9), r: 0.18, smooth: 0.15 }, // Thumb
-            { type: 'capsule', a: new THREE.Vector3(-2.9, 5.6, 0.6), b: new THREE.Vector3(-2.9, 4.8, 0.65), r: 0.16, smooth: 0.1 }, // Index
-            { type: 'capsule', a: new THREE.Vector3(-3.1, 5.6, 0.5), b: new THREE.Vector3(-3.15, 4.7, 0.5), r: 0.17, smooth: 0.1 }, // Middle
-            { type: 'capsule', a: new THREE.Vector3(-3.3, 5.6, 0.4), b: new THREE.Vector3(-3.4, 4.8, 0.35), r: 0.16, smooth: 0.1 }, // Ring
-            { type: 'capsule', a: new THREE.Vector3(-3.5, 5.7, 0.3), b: new THREE.Vector3(-3.6, 5.0, 0.2), r: 0.15, smooth: 0.1 }, // Pinky
+            { type: 'capsule', a: new THREE.Vector3(-2.9, 6.4, 0.7), b: new THREE.Vector3(-3.0, 5.9, 0.9), r: 0.22, smooth: 0.15 }, // Thumb
+            { type: 'capsule', a: new THREE.Vector3(-2.9, 5.6, 0.6), b: new THREE.Vector3(-2.9, 4.8, 0.65), r: 0.20, smooth: 0.1 }, // Index
+            { type: 'capsule', a: new THREE.Vector3(-3.1, 5.6, 0.5), b: new THREE.Vector3(-3.15, 4.7, 0.5), r: 0.21, smooth: 0.1 }, // Middle
+            { type: 'capsule', a: new THREE.Vector3(-3.3, 5.6, 0.4), b: new THREE.Vector3(-3.4, 4.8, 0.35), r: 0.20, smooth: 0.1 }, // Ring
+            { type: 'capsule', a: new THREE.Vector3(-3.5, 5.7, 0.3), b: new THREE.Vector3(-3.6, 5.0, 0.2), r: 0.19, smooth: 0.1 }, // Pinky
 
             // --- Legs (Left) ---
             { type: 'capsule', a: 'hipL', b: 'kneeL', r: 1.0, smooth: 0.8 }, // Quads (Slimmer)

@@ -33,8 +33,8 @@ const ambientLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.2); // Lowe
 scene.add(ambientLight);
 
 const mainLight = new THREE.DirectionalLight(0xfff0dd, 2.5);
-// Moved light higher to ensure shadows cover entire head/shoulder area without clipping
-mainLight.position.set(5, 25, 10);
+// Moved light higher and more forward to ensure good frontal coverage
+mainLight.position.set(5, 20, 20);
 mainLight.castShadow = true;
 mainLight.shadow.bias = -0.0001;
 mainLight.shadow.normalBias = 0.02; 
@@ -77,14 +77,14 @@ const skinMaterial = new THREE.MeshPhysicalMaterial({
 });
 
 // Create Geometry
-// Bounds tightly fitted to new slim anatomy to maximize voxel density (Detail)
-// X: -6 to 6 (Width 12) captures arms
-// Y: -1 to 20 (Height 21) captures feet to head
-// Z: -4 to 4 (Depth 8) captures body depth
-const resolution = window.innerWidth < 600 ? 80 : 120; // High res for fingers
+// Bounds significantly expanded to prevent clipping of front/feet/back
+// X: -8 to 8 (Width 16) captures arms comfortably
+// Y: -3 to 22 (Height 25) captures feet bottom and head top with margin
+// Z: -8 to 8 (Depth 16) captures full body depth, prevents nose/front clipping
+const resolution = window.innerWidth < 600 ? 90 : 140; // Increased resolution to maintain density with larger bounds
 const mesher = new Mesher(anatomy, {
-    min: new THREE.Vector3(-6, -1, -4), 
-    max: new THREE.Vector3(6, 20, 4)
+    min: new THREE.Vector3(-8, -3, -8), 
+    max: new THREE.Vector3(8, 22, 8)
 }, resolution);
 
 const uiStatus = document.getElementById('status-text');
