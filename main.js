@@ -83,7 +83,7 @@ const skinMaterial = new THREE.MeshPhysicalMaterial({
 // Create Geometry
 const resolution = window.innerWidth < 600 ? 60 : 80; // MC Resolution (Cubed!)
 const mesher = new Mesher(anatomy, {
-    min: new THREE.Vector3(-12, 0, -12),
+    min: new THREE.Vector3(-12, -3, -12),
     max: new THREE.Vector3(12, 24, 12)
 }, resolution);
 
@@ -124,6 +124,7 @@ async function generateBody() {
             new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 })
         );
         plane.rotation.x = -Math.PI / 2;
+        plane.position.y = -0.6; // Lower floor to accommodate feet bottoms
         plane.receiveShadow = true;
         scene.add(plane);
 
