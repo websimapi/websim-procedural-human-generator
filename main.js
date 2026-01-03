@@ -76,7 +76,7 @@ const skinMaterial = new THREE.MeshPhysicalMaterial({
 });
 
 // Create Geometry
-const resolution = window.innerWidth < 600 ? 60 : 80; // MC Resolution (Cubed!)
+const resolution = window.innerWidth < 600 ? 60 : 90; // MC Resolution (Cubed!) - Higher res for better anatomy
 const mesher = new Mesher(anatomy, {
     min: new THREE.Vector3(-12, -3, -12),
     max: new THREE.Vector3(12, 24, 12)
