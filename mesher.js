@@ -50,7 +50,12 @@ export class Mesher {
         }
 
         // Generate geometry (triangulation)
-        mc.update();
+        try {
+            mc.update();
+        } catch (e) {
+            console.warn("MarchingCubes update failed (likely resolution/material issue), skipping frame", e);
+            return new THREE.BufferGeometry();
+        }
         
         // The generated geometry is in a local normalized space [-1, 1].
         // We need to transform it to world space.

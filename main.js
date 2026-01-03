@@ -39,6 +39,13 @@ mainLight.shadow.bias = -0.0001;
 mainLight.shadow.normalBias = 0.02; // Helps with shadow acne on curved organic surfaces
 mainLight.shadow.mapSize.width = 2048;
 mainLight.shadow.mapSize.height = 2048;
+// Fix: Expand shadow camera frustum to prevent body parts being cut off
+mainLight.shadow.camera.left = -15;
+mainLight.shadow.camera.right = 15;
+mainLight.shadow.camera.top = 20;
+mainLight.shadow.camera.bottom = -5;
+mainLight.shadow.camera.near = 0.5;
+mainLight.shadow.camera.far = 50;
 scene.add(mainLight);
 
 const rimLight = new THREE.SpotLight(0xbadbff, 10.0);
@@ -76,8 +83,8 @@ const skinMaterial = new THREE.MeshPhysicalMaterial({
 // Create Geometry
 const resolution = window.innerWidth < 600 ? 60 : 80; // MC Resolution (Cubed!)
 const mesher = new Mesher(anatomy, {
-    min: new THREE.Vector3(-10, 0, -10),
-    max: new THREE.Vector3(10, 22, 10)
+    min: new THREE.Vector3(-12, 0, -12),
+    max: new THREE.Vector3(12, 24, 12)
 }, resolution);
 
 const uiStatus = document.getElementById('status-text');
