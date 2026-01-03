@@ -76,26 +76,49 @@ export class HumanAnatomy {
         ];
     }
 
-    // The Master Evaluation Function
-    // Returns the signed distance to the human body surface at point P
-    evaluate(p) {
-        let d = 100.0; // Initial large distance
-
-        // Helper to resolve string keys to vectors
+    // Pre-calculate muscle vectors to avoid lookups in the hot loop
+    prepare() {
         const getVec = (keyOrVec) => {
             if (typeof keyOrVec === 'string') return this.skeleton[keyOrVec];
             return keyOrVec;
         };
 
+        this.cachedMuscles = this.muscles.map(m => {
+            const cm = { ...m }; // shallow copy
+            if (m.type === 'capsule') {
+                cm._a = getVec(m.a);
+                cm._b = getVec(m.b);
+            } else if (m.type === 'sphere' || m.type === 'box') {
+                cm._pos = getVec(m.pos);
+            }
+            return cm;
+        });
+    }
+
+    // The Master Evaluation Function
+    // Returns the signed distance to the human body surface at point P
+    evaluate(p) {
+        let d = 100.0; // Initial large distance
+        
+        // Lazy init
+        if(!this.cachedMuscles) this.prepare();
+
         // Iterate through all muscle primitives
-        for (let m of this.muscles) {
+        for (let m of this.cachedMuscles) {
             let dist = 100.0;
             if (m.type === 'capsule') {
-                dist = SDF.sdCapsule(p, getVec(m.a), getVec(m.b), m.r);
+                dist = SDF.sdCapsule(p, m._a, m._b, m.r);
             } else if (m.type === 'sphere') {
-                dist = SDF.sdSphere(p.clone().sub(getVec(m.pos)), m.r);
+                // Manually subtract to avoid Vector3 allocation
+                const dx = p.x - m._pos.x;
+                const dy = p.y - m._pos.y;
+                const dz = p.z - m._pos.z;
+                dist = SDF.length(dx, dy, dz) - m.r;
             } else if (m.type === 'box') {
-                dist = SDF.sdRoundBox(p.clone().sub(getVec(m.pos)), m.size, m.r);
+                const dx = p.x - m._pos.x;
+                const dy = p.y - m._pos.y;
+                const dz = p.z - m._pos.z;
+                dist = SDF.sdRoundBox({x:dx, y:dy, z:dz}, m.size, m.r);
             }
 
             // Blend gently into the existing shape

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { HumanAnatomy } from './human_anatomy.js';
 import { Mesher } from './mesher.js';
 import { generateSkinTextures } from './procedural_textures.js';
@@ -19,32 +20,37 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.getElementById('canvas-container').appendChild(renderer.domElement);
 
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 10, 0);
 controls.enableDamping = true;
 
 // Lighting (Studio Setup)
-const ambientLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.6);
+// Balanced for PBR skin with Environment Map
+const ambientLight = new THREE.HemisphereLight(0xddeeff, 0x0f0e0d, 0.2); // Lower ambient, let env map do work
 scene.add(ambientLight);
 
-const mainLight = new THREE.DirectionalLight(0xffeebb, 3.0);
-mainLight.position.set(10, 20, 15);
+const mainLight = new THREE.DirectionalLight(0xfff0dd, 2.5);
+mainLight.position.set(5, 10, 7);
 mainLight.castShadow = true;
 mainLight.shadow.bias = -0.0001;
+mainLight.shadow.normalBias = 0.02; // Helps with shadow acne on curved organic surfaces
 mainLight.shadow.mapSize.width = 2048;
 mainLight.shadow.mapSize.height = 2048;
 scene.add(mainLight);
 
-const rimLight = new THREE.SpotLight(0xbadbff, 8.0);
-rimLight.position.set(-15, 20, -15);
-rimLight.lookAt(0, 8, 0);
-rimLight.angle = Math.PI / 4;
-rimLight.penumbra = 0.5;
+const rimLight = new THREE.SpotLight(0xbadbff, 10.0);
+rimLight.position.set(-10, 10, -10);
+rimLight.lookAt(0, 5, 0);
+rimLight.angle = Math.PI / 3;
+rimLight.penumbra = 1.0;
 scene.add(rimLight);
 
-const fillLight = new THREE.PointLight(0xffaa88, 1.0);
-fillLight.position.set(-5, 10, 10);
-scene.add(fillLight);
+const backLight = new THREE.DirectionalLight(0xccccff, 1.0);
+backLight.position.set(0, 5, -10);
+scene.add(backLight);
 
 // --- GENERATION PROCESS ---
 

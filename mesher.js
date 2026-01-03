@@ -15,10 +15,9 @@ export class Mesher {
         
         // Initialize Three.js Marching Cubes
         // Resolution is the number of cells along one axis
-        const mc = new MarchingCubes(res, null, true, true);
+        // We must provide a material to avoid internal crashes in some versions of MarchingCubes
+        const mc = new MarchingCubes(res, new THREE.MeshBasicMaterial({ visible: false }), false, false);
         mc.isolation = 0.0; // Surface at value 0
-        mc.enableUvs = false;
-        mc.enableColors = false;
 
         const field = mc.field;
         const total = res * res * res;
