@@ -35,74 +35,62 @@ export class HumanAnatomy {
             footR: new THREE.Vector3(-2.8, 0, 1.5),
         };
 
-        // Muscle Definitions - Refined for Realistic Anatomy
-        // Using a combination of Capsules (limbs), RoundBoxes (core volumes), and Spheres (joints/bulges)
+        // Muscle Definitions
+        // Defined by attachment points (often relative to bones) and thickness
         this.muscles = [
-            // --- Core / Torso ---
-            // Ribcage (Wider at top, creates the V-taper)
-            { type: 'box', pos: new THREE.Vector3(0, 13.5, 0), size: new THREE.Vector3(3.4, 2.8, 1.6), r: 0.8, smooth: 1.2 },
-            // Abdominal Wall (Connection between Ribs and Pelvis)
-            { type: 'capsule', a: new THREE.Vector3(0, 12.0, 0.8), b: new THREE.Vector3(0, 9.5, 0.5), r: 2.2, smooth: 1.0 },
-            // Pelvis (Wider base)
-            { type: 'box', pos: new THREE.Vector3(0, 9.0, 0), size: new THREE.Vector3(3.4, 1.8, 1.6), r: 0.8, smooth: 1.2 },
+            // --- Torso ---
+            // Ribcage (Upper Torso) - Broader structure
+            { type: 'box', pos: new THREE.Vector3(0, 13.2, 0.2), size: new THREE.Vector3(2.8, 2.0, 1.3), r: 0.9, smooth: 1.4 },
+            // Waist/Abdominal Core (Lower Torso) - Tapered
+            { type: 'box', pos: new THREE.Vector3(0, 10.0, 0), size: new THREE.Vector3(2.4, 2.2, 1.1), r: 0.9, smooth: 1.4 },
             
-            // --- Upper Body Musculature ---
-            // Trapezius (Neck to Shoulder slope)
-            { type: 'capsule', a: new THREE.Vector3(0, 15.2, -0.5), b: new THREE.Vector3(3.0, 14.8, -0.8), r: 1.2, smooth: 0.8 },
-            { type: 'capsule', a: new THREE.Vector3(0, 15.2, -0.5), b: new THREE.Vector3(-3.0, 14.8, -0.8), r: 1.2, smooth: 0.8 },
+            { type: 'capsule', a: 'neck', b: 'spineMid', r: 1.8, smooth: 1.0 }, // Spine column
+            { type: 'capsule', a: 'shoulderL', b: 'shoulderR', r: 0.8, smooth: 1.0 }, // Clavicle Area (Thinner)
             
-            // Latissimus Dorsi (Back width)
-            { type: 'capsule', a: new THREE.Vector3(0, 11.5, -0.8), b: new THREE.Vector3(3.2, 13.5, -1.0), r: 1.6, smooth: 1.2 },
-            { type: 'capsule', a: new THREE.Vector3(0, 11.5, -0.8), b: new THREE.Vector3(-3.2, 13.5, -1.0), r: 1.6, smooth: 1.2 },
-
-            // Pectorals (Chest) - Flattened and angled
-            { type: 'box', pos: new THREE.Vector3(2.0, 13.8, 1.5), size: new THREE.Vector3(1.5, 1.2, 0.3), r: 0.7, smooth: 0.8 },
-            { type: 'box', pos: new THREE.Vector3(-2.0, 13.8, 1.5), size: new THREE.Vector3(1.5, 1.2, 0.3), r: 0.7, smooth: 0.8 },
-
-            // Gluteus Maximus (Buttocks)
-            { type: 'sphere', pos: new THREE.Vector3(2.2, 9.0, -1.5), r: 2.4, smooth: 1.0 },
-            { type: 'sphere', pos: new THREE.Vector3(-2.2, 9.0, -1.5), r: 2.4, smooth: 1.0 },
-
-            // --- Arms ---
-            // Deltoids (Shoulder Cap)
-            { type: 'sphere', pos: 'shoulderL', r: 1.8, smooth: 0.7 },
-            { type: 'sphere', pos: 'shoulderR', r: 1.8, smooth: 0.7 },
-
-            // Upper Arm (Bicep/Tricep volume)
-            { type: 'capsule', a: new THREE.Vector3(4.2, 14.0, 0), b: 'elbowL', r: 1.2, smooth: 0.6 },
-            { type: 'capsule', a: new THREE.Vector3(-4.2, 14.0, 0), b: 'elbowR', r: 1.2, smooth: 0.6 },
+            // Traps
+            { type: 'capsule', a: new THREE.Vector3(1.5, 15.0, -0.5), b: 'shoulderL', r: 1.1, smooth: 0.6 }, // Traps L
+            { type: 'capsule', a: new THREE.Vector3(-1.5, 15.0, -0.5), b: 'shoulderR', r: 1.1, smooth: 0.6 }, // Traps R
             
-            // Forearm (Tapered feel via thinner capsule)
-            { type: 'capsule', a: 'elbowL', b: 'wristL', r: 0.95, smooth: 0.5 },
-            { type: 'capsule', a: 'elbowR', b: 'wristR', r: 0.95, smooth: 0.5 },
-            
-            // Hands (Simple volume)
-            { type: 'box', pos: 'handL', size: new THREE.Vector3(0.6, 1.1, 0.3), r: 0.4, smooth: 0.4 },
-            { type: 'box', pos: 'handR', size: new THREE.Vector3(0.6, 1.1, 0.3), r: 0.4, smooth: 0.4 },
+            // Pectorals - Sculpted with dual capsules for anatomical accuracy (Fan shape)
+            // Upper Head (Clavicular) - Connects Clavicle to Shoulder
+            { type: 'capsule', a: new THREE.Vector3(0.5, 14.5, 1.0), b: new THREE.Vector3(3.8, 13.8, 0.9), r: 0.85, smooth: 0.7 }, // Pec Upper L
+            { type: 'capsule', a: new THREE.Vector3(-0.5, 14.5, 1.0), b: new THREE.Vector3(-3.8, 13.8, 0.9), r: 0.85, smooth: 0.7 }, // Pec Upper R
+            // Lower Head (Sternal) - Bulky main mass, connects Sternum to Armpit
+            { type: 'capsule', a: new THREE.Vector3(0.8, 12.8, 1.5), b: new THREE.Vector3(4.0, 13.2, 0.8), r: 1.1, smooth: 0.8 }, // Pec Lower L
+            { type: 'capsule', a: new THREE.Vector3(-0.8, 12.8, 1.5), b: new THREE.Vector3(-4.0, 13.2, 0.8), r: 1.1, smooth: 0.8 }, // Pec Lower R
 
-            // --- Legs ---
-            // Thighs (Quadriceps/Hamstrings) - Thicker
-            { type: 'capsule', a: 'hipL', b: 'kneeL', r: 1.9, smooth: 0.9 }, 
-            { type: 'capsule', a: 'hipR', b: 'kneeR', r: 1.9, smooth: 0.9 },
-            
-            // Knees (Patella definition)
-            { type: 'sphere', pos: 'kneeL', r: 1.1, smooth: 0.4 },
-            { type: 'sphere', pos: 'kneeR', r: 1.1, smooth: 0.4 },
+            // Lats (Latissimus Dorsi) - The V-Taper on the back/side
+            { type: 'capsule', a: new THREE.Vector3(0.0, 10.0, -1.0), b: new THREE.Vector3(3.5, 13.5, -0.6), r: 1.3, smooth: 1.0 }, // Lat L
+            { type: 'capsule', a: new THREE.Vector3(0.0, 10.0, -1.0), b: new THREE.Vector3(-3.5, 13.5, -0.6), r: 1.3, smooth: 1.0 }, // Lat R
 
-            // Calves (Gastrocnemius bulge)
-            { type: 'capsule', a: 'kneeL', b: 'ankleL', r: 1.1, smooth: 0.6 }, // Bone/lower leg
-            { type: 'sphere', pos: new THREE.Vector3(2.5, 4.0, 0.5), r: 1.4, smooth: 0.8 }, // Muscle Belly L
-            { type: 'capsule', a: 'kneeR', b: 'ankleR', r: 1.1, smooth: 0.6 },
-            { type: 'sphere', pos: new THREE.Vector3(-2.5, 4.0, 0.5), r: 1.4, smooth: 0.8 }, // Muscle Belly R
+            // Abdominals (Rectus Abdominis)
+            { type: 'capsule', a: new THREE.Vector3(0, 12.0, 1.6), b: new THREE.Vector3(0, 9.5, 1.5), r: 1.3, smooth: 0.5 }, // Abs
+            { type: 'sphere', pos: new THREE.Vector3(2.5, 9.0, -1.2), r: 2.1, smooth: 1.0 }, // Glutes L
+            { type: 'sphere', pos: new THREE.Vector3(-2.5, 9.0, -1.2), r: 2.1, smooth: 1.0 }, // Glutes R
 
-            // Feet (Flattened bottom)
-            { type: 'box', pos: new THREE.Vector3(2.8, 0.4, 0.8), size: new THREE.Vector3(1.2, 0.6, 2.4), r: 0.3, smooth: 0.4 },
-            { type: 'box', pos: new THREE.Vector3(-2.8, 0.4, 0.8), size: new THREE.Vector3(1.2, 0.6, 2.4), r: 0.3, smooth: 0.4 },
+            // --- Head ---
+            { type: 'sphere', pos: 'head', r: 2.2, smooth: 0.2 }, // Cranium
+            { type: 'box', pos: new THREE.Vector3(0, 16.2, 0.8), size: new THREE.Vector3(1.2, 1.0, 1.0), r: 0.5, smooth: 0.5 }, // Face Structure
 
-            // --- Head & Neck ---
-            { type: 'capsule', a: new THREE.Vector3(0, 15.0, 0), b: new THREE.Vector3(0, 16.5, 0), r: 1.4, smooth: 0.6 }, // Neck
-            { type: 'sphere', pos: new THREE.Vector3(0, 17.5, 0.2), r: 2.3, smooth: 0.3 }, // Cranium
-            { type: 'box', pos: new THREE.Vector3(0, 16.5, 1.2), size: new THREE.Vector3(1.3, 1.2, 0.8), r: 0.6, smooth: 0.5 }, // Jaw/Face
+            // --- Arms (Left) ---
+            { type: 'capsule', a: 'shoulderL', b: 'elbowL', r: 0.85, smooth: 0.6 }, // Bicep/Tricep
+            { type: 'capsule', a: 'elbowL', b: 'wristL', r: 0.65, smooth: 0.5 }, // Forearm
+            { type: 'capsule', a: 'wristL', b: 'handL', r: 0.5, smooth: 0.4 }, // Hand Palm
+
+            // --- Arms (Right) ---
+            { type: 'capsule', a: 'shoulderR', b: 'elbowR', r: 0.85, smooth: 0.6 },
+            { type: 'capsule', a: 'elbowR', b: 'wristR', r: 0.65, smooth: 0.5 },
+            { type: 'capsule', a: 'wristR', b: 'handR', r: 0.5, smooth: 0.4 },
+
+            // --- Legs (Left) ---
+            { type: 'capsule', a: 'hipL', b: 'kneeL', r: 1.4, smooth: 0.8 }, // Thigh (Quad/Hamstring)
+            { type: 'capsule', a: 'kneeL', b: 'ankleL', r: 0.9, smooth: 0.6 }, // Calf
+            { type: 'capsule', a: 'ankleL', b: 'footL', r: 0.6, smooth: 0.4 }, // Foot
+
+             // --- Legs (Right) ---
+            { type: 'capsule', a: 'hipR', b: 'kneeR', r: 1.4, smooth: 0.8 },
+            { type: 'capsule', a: 'kneeR', b: 'ankleR', r: 0.9, smooth: 0.6 },
+            { type: 'capsule', a: 'ankleR', b: 'footR', r: 0.6, smooth: 0.4 },
         ];
     }
 
@@ -156,13 +144,11 @@ export class HumanAnatomy {
         }
 
         // Add detailed nose/chin features via small primitives
-        // Nose/Facial Features
+        // Nose
         const headPos = this.skeleton.head;
-        // Adjust nose position to protrude from the new head size
-        const nosePos = new THREE.Vector3(headPos.x, headPos.y - 0.8, headPos.z + 2.5);
-        const noseTip = new THREE.Vector3(nosePos.x, nosePos.y - 0.4, nosePos.z + 0.3);
-        const noseDist = SDF.sdCapsule(p, nosePos, noseTip, 0.25);
-        d = SDF.smin(d, noseDist, 0.2);
+        const nosePos = new THREE.Vector3(headPos.x, headPos.y - 0.5, headPos.z + 2.0);
+        const noseDist = SDF.sdCapsule(p, nosePos, new THREE.Vector3(nosePos.x, nosePos.y - 0.6, nosePos.z+0.2), 0.3);
+        d = SDF.smin(d, noseDist, 0.3);
 
         return d;
     }
